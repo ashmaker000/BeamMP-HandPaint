@@ -1,31 +1,46 @@
 # BeamNG HandPaint
 
-An alpha vehicle painter derived from the painting system in the local **BeamMP-Mecca** project. Paint directly on a vehicle, save an editable design, preview it on another supported vehicle, then apply it. Includes single-player operation and a BeamMP server plugin for synchronized painting and late-join replay.
+Paint directly on a vehicle, save an editable design, preview it on another supported vehicle, then apply it. Includes single-player operation and a BeamMP server plugin for synchronized painting and late-join replay.
 
-**Status:** alpha. Live single-player tests confirmed native strokes on the Sunburst wagon, save/reload, transfer to the Covet, and replay after vehicle reload. Native thumbnail capture is also verified. Two-client BeamMP synchronization remains mock-tested only. See [the live test results](docs/verification/2026-09-24.md).
-
-## Build and install
-
-```powershell
-.\test.ps1
-.\build.ps1
-```
-
-Tests require `lua` and `luac` on PATH. The build uses PowerShell and produces:
-
-```text
-dist/Resources/Client/BeamNGHandPaint.zip
-dist/Resources/Server/BeamNGHandPaint/main.lua
-dist/Resources/Server/BeamNGHandPaint/lua/design.lua
-```
+### Installation
 
 For **single-player**, copy the ZIP to the `mods` directory of the active BeamNG user folder. Find that folder through the BeamNG launcher rather than the Steam installation directory.
 
-For **BeamMP**, copy the contents of `dist/Resources` into your server's `Resources` directory and restart the server. Clients receive the ZIP on connection. The server plugin is required for multiplayer painting; installing only the client ZIP does not let other players see designs. This follows the [BeamMP 3.x resource layout](https://docs.beammp.com/scripting/server/latest-server-reference/).
+### Installation
 
-Install the updated client **and server plugin** together. Older plugins are reported as unavailable because they cannot preserve grouped strokes.
+1. **Download the release**
 
-Run HandPaint separately from Mecca's camouflage mode: both use the vehicle's Dynamic Textures material and would compete for the same texture binding.
+   * Go to the **Releases** page.
+   * Download the latest `.zip` file.
+
+2. **Extract the files**
+
+   * Unzip the download.
+   * You will get two folders:
+
+     * `Client`
+     * `Server`
+
+3. **Install the client files**
+
+   * Open the extracted **Client** folder.
+   * Inside it is a `.zip` file.
+   * Upload that `.zip` into your server’s **client mods folder**.
+
+4. **Install the server files**
+
+   * Open the extracted **Server** folder.
+   * Inside is a folder for the game mode (e.g. `CarHunt`, `Tag`, `PropHunt` etc.).
+   * On your server, open the main **server folder**.
+   * Create a folder for that game mode (for example: `CarHunt`, `Tag`, `PropHunt`).
+   * Copy **all files** from the extracted game mode folder into the matching folder you just created on the server.
+
+5. **Restart the server**
+
+   * Restart your BeamMP server.
+   * The game mode should now be active.
+
+---
 
 ## Painting and saving
 
@@ -62,30 +77,3 @@ Local checkpoints are written every five seconds while there are edits, at the e
 Open **Designs > Recover unfinished designs**, choose **Recover**, inspect the preview, then apply and save with a name. Recovery never automatically replaces the current car's design. **Discard** removes that checkpoint pair. Files are stored under `settings/handpaint/recovery/`, separately for each session, vehicle and model.
 
 The header shows **Connecting**, **Syncing**, **Synced with server**, or **Unavailable**. Synced means the server acknowledged the design; it does not confirm every remote player's renderer has finished. A missing acknowledgement triggers a resync attempt and preserves a local checkpoint.
-
-## Vehicle support and limits
-
-The runtime checks for a paint-design slot, an enabled stock Dynamic Textures skin, and compatible body materials. See the [asset inventory inherited from Mecca](docs/vehicle-support.md). It lists many vanilla models, but is not a live rendering certification. MD-Series and Rock Bouncer had disabled stock skins in that inventory. Unsupported vehicles display a reason instead of being force-enabled.
-
-- Up to 3,000 paint operations per vehicle. A held brush can produce 30 operations per second; smoothing adds intermediate stamps.
-- BeamMP owns the accepted history, validates ownership and stroke data, and replays designs for joining clients.
-- Large saved designs upload in chunks; the server commits only when the complete upload arrives. Wait for synchronization before saving or changing the design.
-- Undo/redo groups newly painted operations by mouse drag. Legacy saved strokes without group IDs undo individually. Applying a saved design starts a new history; save the previous design first if you want to keep it.
-- Reset/respawn replay retains paint for the same model. Changing model clears active paint; explicitly choose a saved design to transfer it.
-- There is no exported static vehicle skin ZIP, permanent server-side design library or automatic loading of paint from a `.pc` configuration in this alpha.
-
-## Shader compatibility
-
-The default build includes Mecca's one-line Dynamic Decals DirectX 12 shader fix, based on the locally installed BeamNG 0.39.4.0 shader. It changes the `SV_POSITION` input interpolation qualifier to `noperspective centroid`. The installed original was checked on 2026-09-24 and has SHA256 `98A45DD205BB9B35A8F4EAC275C2C8B2DA5F2113A90634663B9AFB2F67B5CE66`.
-
-The ZIP mounts an override; the build does not edit the game installation. Review this compatibility file after a game update. Use `./build.ps1 -SkipShaderFix` to produce a ZIP without it. The live DirectX 12 test used an existing, byte-identical loose shader override in the user's folder, so delivery of the fix from this ZIP alone remains unverified.
-
-## Verification
-
-`test.ps1` checks Lua syntax and exercises design validation, fit maths, source immutability, save/reload failures, interrupted recovery writes, drag boundaries, text-input shortcut protection, the client editor flow, native-renderer calls with mocks, vehicle picking, skin queues, brush smoothing and server history/upload/ownership logic. A client integration test connects the real editor controller to the real server handlers using a mock transport.
-
-Follow [the live test checklist](docs/live-test.md) before treating this as ready for multiplayer use.
-
-## Source provenance
-
-The renderer, skin detection, queued-skin handling, ray picker, smoothing, brush textures and shader compatibility file were adapted/copied from `../BeamMP-Mecca`. HandPaint adds its own controller, versioned saved-design format, local library, fitting controls, server protocol and tests. No Mecca gameplay rules or taunt audio are included. The shader originates from the installed game; no new license is asserted over inherited files.
