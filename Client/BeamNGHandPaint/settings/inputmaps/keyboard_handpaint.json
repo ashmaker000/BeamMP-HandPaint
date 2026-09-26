@@ -1,0 +1,16 @@
+{
+  "bindings": [
+    {
+      "control": "alt h",
+      "action": "handpaint_toggle"
+    },
+    {
+      "control": "ctrl z",
+      "action": "handpaint_undo"
+    },
+    {
+      "control": "ctrl y",
+      "action": "handpaint_redo"
+    }
+  ]
+}

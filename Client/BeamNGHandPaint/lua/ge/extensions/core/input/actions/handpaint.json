@@ -1,0 +1,29 @@
+{
+  "handpaint_toggle": {
+    "cat": "gameplay",
+    "order": 910,
+    "ctx": "tlua",
+    "actionMap": "Normal",
+    "onDown": "extensions.handpaint_main.toggle()",
+    "title": "HandPaint: Show or hide painter",
+    "desc": "Toggle the vehicle painting and saved design window"
+  },
+  "handpaint_undo": {
+    "cat": "gameplay",
+    "order": 911,
+    "ctx": "tlua",
+    "actionMap": "Normal",
+    "onDown": "extensions.handpaint_main.undo()",
+    "title": "HandPaint: Undo brush drag",
+    "desc": "Undo brush drag while HandPaint is visible and no text field is active"
+  },
+  "handpaint_redo": {
+    "cat": "gameplay",
+    "order": 912,
+    "ctx": "tlua",
+    "actionMap": "Normal",
+    "onDown": "extensions.handpaint_main.redo()",
+    "title": "HandPaint: Redo brush drag",
+    "desc": "Redo brush drag while HandPaint is visible and no text field is active"
+  }
+}
