@@ -1,5 +1,5 @@
 # BeamNG HandPaint
-<img width="2559" height="1439" alt="screenshot_2026-09-26_09-28-42" src="https://github.com/user-attachments/assets/ff258df3-4cf0-4cdb-8f9c-c33f865f47ff" />
+<img width="2559" height="1439" alt="screenshot_2026-10-01_18-22-39" src="https://github.com/user-attachments/assets/058d8374-7949-4cc4-9cb8-8bcd48fb3acd" />
 
 Paint directly on a vehicle, save an editable design, preview it on another supported vehicle, then apply it. Includes single-player operation and a BeamMP server plugin for synchronized painting and late-join replay.
 
